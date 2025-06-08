@@ -7,5 +7,5 @@ public class Room
     public RoomType RoomType { get; set; }
     public string? Description { get; set; }
     public decimal PricePerNight { get; set; }
-    public bool IsAvailable { get; set; }
+    public bool IsAvailable { get; set; }//whatever
 }
