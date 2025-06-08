@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApplication2.Enteties;
+using WebApplication2.UnitOfWork;
 
 namespace WebApplication2.Controllers;
 
@@ -35,5 +36,21 @@ public class HotelBookingController:ControllerBase
         }
         _context.SaveChanges();
         return new JsonResult(Ok(booking));
+    }
+}
+public class BookingController : ControllerBase
+{
+    private readonly IUnitOfWork _unitOfWork;
+
+    public BookingController(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
+
+    [HttpGet("user/{userId}")]
+    public async Task<IActionResult> GetBookingsByUser(string userId)
+    {
+        var bookings = await _unitOfWork.Bookings.GetBookingsByUserIdAsync(userId);
+        return Ok(bookings);
     }
 }
