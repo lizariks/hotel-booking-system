@@ -47,6 +47,12 @@ public class HotelDbContext : DbContext
         modelBuilder.Entity<User>()
             .Property(u => u.Email)
             .IsRequired();
+        modelBuilder.Entity<Review>()
+            .HasOne(r => r.Room)
+            .WithMany(room => room.Reviews)
+            .HasForeignKey(r => r.RoomId)
+            .OnDelete(DeleteBehavior.Cascade); 
+
 
     }
 

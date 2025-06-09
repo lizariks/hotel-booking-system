@@ -55,6 +55,24 @@ public class BookingService : IBookingService
             IsCancelled = b.IsCancelled
         });
     }
+    public async Task<BookingDto> GetBookingByIdAsync(string id)
+    {
+        var booking = await _unitOfWork.Bookings.GetByIdAsync(id);
+        if (booking == null)
+            return null;
+
+        return new BookingDto
+        {
+            Id = booking.Id,
+            UserId = booking.UserId,
+            RoomId = booking.RoomId,
+            CheckInDate = booking.CheckInDate,
+            CheckOutDate = booking.CheckOutDate,
+            TotalPrice = booking.TotalPrice,
+            IsCancelled = booking.IsCancelled
+        };
+    }
+
 
     public async Task CancelBookingAsync(string bookingId)
     {

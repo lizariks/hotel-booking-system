@@ -24,6 +24,7 @@ public class RoomService : IRoomService
                 Id = r.Id,
                 RoomNumber = r.RoomNumber,
                 RoomType = r.RoomType,
+                Description = r.Description,
                 PricePerNight = r.PricePerNight,
                 IsAvailable = r.IsAvailable
             });
@@ -39,8 +40,49 @@ public class RoomService : IRoomService
             Id = room.Id,
             RoomNumber = room.RoomNumber,
             RoomType = room.RoomType,
+            Description = room.Description,
             PricePerNight = room.PricePerNight,
             IsAvailable = room.IsAvailable
         };
     }
+    public async Task AddRoomAsync(RoomDto roomDto)
+    {
+        var room = new Room
+        {
+            Id = Guid.NewGuid().ToString(),
+            RoomNumber = roomDto.RoomNumber,
+            RoomType = roomDto.RoomType,
+            Description = roomDto.Description,
+            PricePerNight = roomDto.PricePerNight,
+            IsAvailable = roomDto.IsAvailable
+        };
+
+        await _unitOfWork.Rooms.AddAsync(room);
+        await _unitOfWork.SaveAsync();
+    }
+
+    public async Task UpdateRoomAsync(RoomDto roomDto)
+    {
+        var room = await _unitOfWork.Rooms.GetByIdAsync(roomDto.Id);
+        if (room == null) return;
+
+        room.RoomNumber = roomDto.RoomNumber;
+        room.RoomType = roomDto.RoomType;
+        room.Description = roomDto.Description;
+        room.PricePerNight = roomDto.PricePerNight;
+        room.IsAvailable = roomDto.IsAvailable;
+
+        _unitOfWork.Rooms.Update(room);
+        await _unitOfWork.SaveAsync();
+    }
+
+    public async Task DeleteRoomAsync(string id)
+    {
+        var room = await _unitOfWork.Rooms.GetByIdAsync(id);
+        if (room == null) return;
+
+        _unitOfWork.Rooms.Delete(room);
+        await _unitOfWork.SaveAsync();
+    }
+
 }

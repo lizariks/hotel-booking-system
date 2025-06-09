@@ -20,6 +20,7 @@ public class ReviewService : IReviewService
         {
             Id = Guid.NewGuid().ToString(),
             UserId = reviewDto.UserId,
+            RoomId = reviewDto.RoomId,
             Rating = reviewDto.Rating,
             CreatedAt = DateTime.UtcNow
         };
@@ -27,4 +28,30 @@ public class ReviewService : IReviewService
         await _unitOfWork.Reviews.AddAsync(review);
         await _unitOfWork.SaveAsync();
     }
+    public async Task<IEnumerable<ReviewDto>> GetAllReviewsAsync()
+    {
+        var reviews = await _unitOfWork.Reviews.GetAllAsync();
+        return reviews.Select(r => new ReviewDto
+        {
+            Id = r.Id,
+            UserId = r.UserId,
+            RoomId = r.RoomId,
+            Rating = r.Rating,
+            CreatedAt = r.CreatedAt
+        });
+    }
+
+    public async Task<IEnumerable<ReviewDto>> GetReviewsByUserIdAsync(string userId)
+    {
+        var reviews = await _unitOfWork.Reviews.GetReviewsByUserIdAsync(userId);
+        return reviews.Select(r => new ReviewDto
+        {
+            Id = r.Id,
+            UserId = r.UserId,
+            RoomId = r.RoomId,
+            Rating = r.Rating,
+            CreatedAt = r.CreatedAt
+        });
+    }
+
 }
