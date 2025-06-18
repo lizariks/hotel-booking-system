@@ -5,8 +5,8 @@ public interface IUnitOfWork : IDisposable
 {
     IBookingRepository Bookings { get; }
     IGenericRepository<User> Users { get; }
-    IGenericRepository<Room> Rooms { get; }
     Task<int> SaveAsync();
     IReviewRepository Reviews { get; }
+    IRoomRepository Rooms { get; }
 
 }

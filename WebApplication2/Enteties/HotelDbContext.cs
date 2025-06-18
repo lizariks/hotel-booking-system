@@ -51,7 +51,11 @@ public class HotelDbContext : DbContext
             .HasOne(r => r.Room)
             .WithMany(room => room.Reviews)
             .HasForeignKey(r => r.RoomId)
-            .OnDelete(DeleteBehavior.Cascade); 
+            .OnDelete(DeleteBehavior.Cascade);
+    
+        base.OnModelCreating(modelBuilder); 
+
+       
 
 
     }

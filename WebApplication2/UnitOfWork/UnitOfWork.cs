@@ -7,7 +7,7 @@ public class UnitOfWork : IUnitOfWork
 
     public IBookingRepository Bookings { get; private set; }
     public IGenericRepository<User> Users { get; private set; }
-    public IGenericRepository<Room> Rooms { get; private set; }
+    public IRoomRepository Rooms { get; private set; }
     public IReviewRepository Reviews { get; private set; }
 
     public UnitOfWork(HotelDbContext context)
@@ -15,7 +15,7 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
         Bookings = new BookingRepository(_context);
         Users = new GenericRepository<User>(_context);
-        Rooms = new GenericRepository<Room>(_context);
+        Rooms = new RoomRepository(_context);
         Reviews = new ReviewRepository(_context);
     }
 

@@ -1,12 +1,11 @@
 namespace WebApplication2.Enteties;
 using System.Collections.Generic;
-public class User
+using Microsoft.AspNetCore.Identity;
+public class User : IdentityUser
 {
-    public string Id { get; set; }
+    
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; }= null!;
-    public string Email { get; set; }
-    public string Password { get; set; }
     public DateTime CreatedAt { get; set; }= DateTime.UtcNow;
     public string Role { get; set; } = "Customer";
     

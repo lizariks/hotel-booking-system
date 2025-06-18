@@ -9,5 +9,6 @@ public interface IRoomService
     Task AddRoomAsync(RoomDto roomDto);
     Task UpdateRoomAsync(RoomDto roomDto);
     Task DeleteRoomAsync(string Id);
-    
+    Task<IEnumerable<RoomDto>> GetFilteredRoomsAsync(RoomFilterDto filter);
+
 }
