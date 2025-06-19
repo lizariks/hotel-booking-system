@@ -35,7 +35,6 @@
 /Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/staticwebassets.build.json
 /Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/staticwebassets.development.json
 /Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/scopedcss/bundle/WebApplication2.styles.css
-/Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/WebApplication2.csproj.CopyComplete
 /Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/WebApplication2.dll
 /Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/refint/WebApplication2.dll
 /Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/WebApplication2.pdb
@@ -58,3 +57,10 @@
 /Users/admin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /Users/admin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net7.0/Microsoft.IdentityModel.Tokens.dll
 /Users/admin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net7.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/admin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net7.0/AutoMapper.dll
+/Users/admin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net7.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/Users/admin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net7.0/WebApplication2.staticwebassets.runtime.json
+/Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/WebApplication2.RazorAssemblyInfo.cache
+/Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/WebApplication2.RazorAssemblyInfo.cs
+/Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/WebApplication2.sourcelink.json
+/Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/WebAppli.0DB3FC1A.Up2Date

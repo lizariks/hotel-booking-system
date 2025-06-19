@@ -1,60 +1,97 @@
-namespace WebApplication2.Controllers;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WebApplication2.DTO;
 using WebApplication2.Services.Interfaces;
 
-
-
-[ApiController]
-[Route("api/[controller]")]
-public class AuthController : ControllerBase
+namespace WebApplication2.Controllers
 {
-    private readonly IUserService _userService;
-    private readonly IJwtTokenGenerator _jwtTokenGenerator;
-
-    public AuthController(IUserService userService, IJwtTokenGenerator jwtTokenGenerator)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthController : ControllerBase
     {
-        _userService = userService;
-        _jwtTokenGenerator = jwtTokenGenerator;
-    }
+        private readonly IUserService _userService;
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
+        private readonly IRefreshTokenService _refreshTokenService;
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserRegisterDto model)
-    {
-        try
+        public AuthController(
+            IUserService userService,
+            IJwtTokenGenerator jwtTokenGenerator,
+            IRefreshTokenService refreshTokenService)
         {
-            var user = await _userService.RegisterAsync(model);
-            return Ok(user);
+            _userService = userService;
+            _jwtTokenGenerator = jwtTokenGenerator;
+            _refreshTokenService = refreshTokenService;
         }
-        catch (Exception ex)
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] UserRegisterDto model)
         {
-            return BadRequest(ex.Message);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var user = await _userService.RegisterAsync(model);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
         }
-    }
 
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UserLoginDto model)
-    {
-        var user = await _userService.LoginAsync(model);
-        if (user == null)
-            return Unauthorized("Invalid email or password");
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginDto model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        var token = _jwtTokenGenerator.GenerateToken(user.Id, user.Email);
-        return Ok(new { token });
-    }
+            var user = await _userService.LoginAsync(model);
+            if (user == null)
+                return Unauthorized("Invalid email or password");
 
-    [Authorize]
-    [HttpGet("profile")]
-    public async Task<IActionResult> GetProfile()
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var user = await _userService.GetUserByIdAsync(userId);
+            var accessToken = _jwtTokenGenerator.GenerateToken(user.Id, user.Email);
+            var refreshToken = _refreshTokenService.GenerateRefreshToken(user.Id);
 
-        if (user == null) return NotFound();
+            return Ok(new
+            {
+                accessToken,
+                refreshToken
+            });
+        }
 
-        return Ok(user);
+        [HttpPost("refresh")]
+        public async Task<IActionResult> RefreshToken([FromBody] TokenRefreshDto dto)
+        {
+            var principal = _jwtTokenGenerator.GetPrincipalFromExpiredToken(dto.AccessToken);
+            if (principal == null)
+                return BadRequest("Invalid access token");
+
+            var userId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var isValid = await _refreshTokenService.ValidateRefreshToken(userId, dto.RefreshToken);
+            if (!isValid)
+                return Unauthorized("Invalid refresh token");
+
+            var newAccessToken = _jwtTokenGenerator.GenerateToken(userId, principal.FindFirstValue(ClaimTypes.Email));
+            var newRefreshToken = _refreshTokenService.GenerateRefreshToken(userId); // Rotate token
+
+            return Ok(new
+            {
+                accessToken = newAccessToken,
+                refreshToken = newRefreshToken
+            });
+        }
+
+        [Authorize]
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetProfile()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userService.GetUserByIdAsync(userId);
+
+            return user == null ? NotFound() : Ok(user);
+        }
     }
 }
