@@ -114,6 +114,24 @@ namespace WebApplication2.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rooms");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "room-1",
+                            IsAvailable = true,
+                            PricePerNight = 100m,
+                            RoomNumber = "101",
+                            RoomType = 2
+                        },
+                        new
+                        {
+                            Id = "room-2",
+                            IsAvailable = false,
+                            PricePerNight = 200m,
+                            RoomNumber = "102",
+                            RoomType = 3
+                        });
                 });
 
             modelBuilder.Entity("WebApplication2.Enteties.User", b =>
@@ -185,6 +203,25 @@ namespace WebApplication2.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "user-1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a920f4e5-7352-4ff7-8887-abf4a0afa7e6",
+                            CreatedAt = new DateTime(2025, 6, 19, 12, 4, 50, 617, DateTimeKind.Utc).AddTicks(1920),
+                            Email = "elizachigir@gmail.com",
+                            EmailConfirmed = false,
+                            FirstName = "Elizaveta",
+                            LastName = "Chigir",
+                            LockoutEnabled = false,
+                            PasswordHash = "123456",
+                            PhoneNumberConfirmed = false,
+                            Role = "Customer",
+                            SecurityStamp = "e1d661cc-c4fe-44c4-a1e8-50c94464531f",
+                            TwoFactorEnabled = false
+                        });
                 });
 
             modelBuilder.Entity("WebApplication2.Enteties.Booking", b =>
