@@ -1,57 +1,45 @@
 namespace WebApplication2.Services.Implement;
+
+using AutoMapper;
 using WebApplication2.Services.Interfaces;
 using WebApplication2.DTO;
 using WebApplication2.UnitOfWork;
-using WebApplication2.Repository;
 using WebApplication2.Enteties;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 public class ReviewService : IReviewService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public ReviewService(IUnitOfWork unitOfWork)
+    public ReviewService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
-    
     public async Task AddReviewAsync(ReviewDto reviewDto)
     {
-        var review = new Review
-        {
-            Id = Guid.NewGuid().ToString(),
-            UserId = reviewDto.UserId,
-            RoomId = reviewDto.RoomId,
-            Rating = reviewDto.Rating,
-            CreatedAt = DateTime.UtcNow
-        };
+        var review = _mapper.Map<Review>(reviewDto);
+        review.Id = Guid.NewGuid().ToString();
+        review.CreatedAt = DateTime.UtcNow;
 
         await _unitOfWork.Reviews.AddAsync(review);
         await _unitOfWork.SaveAsync();
     }
+
     public async Task<IEnumerable<ReviewDto>> GetAllReviewsAsync()
     {
         var reviews = await _unitOfWork.Reviews.GetAllAsync();
-        return reviews.Select(r => new ReviewDto
-        {
-            Id = r.Id,
-            UserId = r.UserId,
-            RoomId = r.RoomId,
-            Rating = r.Rating,
-            CreatedAt = r.CreatedAt
-        });
+        return _mapper.Map<IEnumerable<ReviewDto>>(reviews);
     }
 
     public async Task<IEnumerable<ReviewDto>> GetReviewsByUserIdAsync(string userId)
     {
         var reviews = await _unitOfWork.Reviews.GetReviewsByUserIdAsync(userId);
-        return reviews.Select(r => new ReviewDto
-        {
-            Id = r.Id,
-            UserId = r.UserId,
-            RoomId = r.RoomId,
-            Rating = r.Rating,
-            CreatedAt = r.CreatedAt
-        });
+        return _mapper.Map<IEnumerable<ReviewDto>>(reviews);
     }
-
 }

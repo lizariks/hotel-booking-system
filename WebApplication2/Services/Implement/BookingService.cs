@@ -1,18 +1,24 @@
-using WebApplication2.Services.Interfaces;
-
 namespace WebApplication2.Services.Implement;
+
+using AutoMapper;
+using WebApplication2.Services.Interfaces;
 using WebApplication2.DTO;
 using WebApplication2.UnitOfWork;
 using WebApplication2.Enteties;
-using WebApplication2.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 public class BookingService : IBookingService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public BookingService(IUnitOfWork unitOfWork)
+    public BookingService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<BookingDto> CreateBookingAsync(BookingDto dto)
@@ -21,63 +27,33 @@ public class BookingService : IBookingService
         if (room == null || !room.IsAvailable)
             throw new InvalidOperationException("Room not available");
 
-        var booking = new Booking
-        {
-            Id = Guid.NewGuid().ToString(),
-            UserId = dto.UserId,
-            RoomId = dto.RoomId,
-            CheckInDate = dto.CheckInDate,
-            CheckOutDate = dto.CheckOutDate,
-            TotalPrice = dto.TotalPrice,
-            IsCancelled = false
-        };
+        var booking = _mapper.Map<Booking>(dto);
+        booking.Id = Guid.NewGuid().ToString();
+        booking.IsCancelled = false;
 
         await _unitOfWork.Bookings.AddAsync(booking);
         room.IsAvailable = false;
         await _unitOfWork.SaveAsync();
 
-        dto.Id = booking.Id;
-        return dto;
+        return _mapper.Map<BookingDto>(booking);
     }
 
     public async Task<IEnumerable<BookingDto>> GetBookingsByUserAsync(string userId)
     {
         var bookings = await _unitOfWork.Bookings.GetBookingsByUserIdAsync(userId);
-
-        return bookings.Select(b => new BookingDto
-        {
-            Id = b.Id,
-            UserId = b.UserId,
-            RoomId = b.RoomId,
-            CheckInDate = b.CheckInDate,
-            CheckOutDate = b.CheckOutDate,
-            TotalPrice = b.TotalPrice,
-            IsCancelled = b.IsCancelled
-        });
+        return _mapper.Map<IEnumerable<BookingDto>>(bookings);
     }
+
     public async Task<BookingDto> GetBookingByIdAsync(string id)
     {
         var booking = await _unitOfWork.Bookings.GetByIdAsync(id);
-        if (booking == null)
-            return null;
-
-        return new BookingDto
-        {
-            Id = booking.Id,
-            UserId = booking.UserId,
-            RoomId = booking.RoomId,
-            CheckInDate = booking.CheckInDate,
-            CheckOutDate = booking.CheckOutDate,
-            TotalPrice = booking.TotalPrice,
-            IsCancelled = booking.IsCancelled
-        };
+        return booking == null ? null : _mapper.Map<BookingDto>(booking);
     }
-
 
     public async Task CancelBookingAsync(string bookingId)
     {
         var booking = await _unitOfWork.Bookings.GetByIdAsync(bookingId);
-        if (booking == null || booking.IsCancelled == true) return;
+        if (booking == null || booking.IsCancelled==true) return;
 
         booking.IsCancelled = true;
 
@@ -87,4 +63,3 @@ public class BookingService : IBookingService
         await _unitOfWork.SaveAsync();
     }
 }
-

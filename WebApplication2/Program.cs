@@ -13,9 +13,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AutoMapper;
+using WebApplication2.Mappings;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+//mapping
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 
 //contection to db
 builder.Services.AddDbContext<HotelDbContext>(options =>

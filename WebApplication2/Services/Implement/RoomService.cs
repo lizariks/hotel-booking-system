@@ -1,62 +1,37 @@
-namespace WebApplication2.Services.Implement;
+using AutoMapper; 
+using WebApplication2.DTO;
 using WebApplication2.Enteties;
 using WebApplication2.Services.Interfaces;
 using WebApplication2.UnitOfWork;
-using WebApplication2.Enteties;
-using Microsoft.EntityFrameworkCore;
-using WebApplication2.DTO;
+
 public class RoomService : IRoomService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public RoomService(IUnitOfWork unitOfWork)
+    public RoomService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public async Task<IEnumerable<RoomDto>> GetAvailableRoomsAsync()
     {
         var rooms = await _unitOfWork.Rooms.GetAllAsync();
-        return rooms
-            .Where(r => r.IsAvailable)
-            .Select(r => new RoomDto
-            {
-                Id = r.Id,
-                RoomNumber = r.RoomNumber,
-                RoomType = r.RoomType,
-                Description = r.Description,
-                PricePerNight = r.PricePerNight,
-                IsAvailable = r.IsAvailable
-            });
+        var availableRooms = rooms.Where(r => r.IsAvailable);
+        return _mapper.Map<IEnumerable<RoomDto>>(availableRooms);
     }
 
     public async Task<RoomDto> GetRoomByIdAsync(string id)
     {
         var room = await _unitOfWork.Rooms.GetByIdAsync(id);
-        if (room == null) return null;
-
-        return new RoomDto
-        {
-            Id = room.Id,
-            RoomNumber = room.RoomNumber,
-            RoomType = room.RoomType,
-            Description = room.Description,
-            PricePerNight = room.PricePerNight,
-            IsAvailable = room.IsAvailable
-        };
+        return room == null ? null : _mapper.Map<RoomDto>(room);
     }
+
     public async Task AddRoomAsync(RoomDto roomDto)
     {
-        var room = new Room
-        {
-            Id = Guid.NewGuid().ToString(),
-            RoomNumber = roomDto.RoomNumber,
-            RoomType = roomDto.RoomType,
-            Description = roomDto.Description,
-            PricePerNight = roomDto.PricePerNight,
-            IsAvailable = roomDto.IsAvailable
-        };
-
+        var room = _mapper.Map<Room>(roomDto);
+        room.Id = Guid.NewGuid().ToString(); 
         await _unitOfWork.Rooms.AddAsync(room);
         await _unitOfWork.SaveAsync();
     }
@@ -66,12 +41,7 @@ public class RoomService : IRoomService
         var room = await _unitOfWork.Rooms.GetByIdAsync(roomDto.Id);
         if (room == null) return;
 
-        room.RoomNumber = roomDto.RoomNumber;
-        room.RoomType = roomDto.RoomType;
-        room.Description = roomDto.Description;
-        room.PricePerNight = roomDto.PricePerNight;
-        room.IsAvailable = roomDto.IsAvailable;
-
+        _mapper.Map(roomDto, room); 
         _unitOfWork.Rooms.Update(room);
         await _unitOfWork.SaveAsync();
     }
@@ -84,7 +54,7 @@ public class RoomService : IRoomService
         _unitOfWork.Rooms.Delete(room);
         await _unitOfWork.SaveAsync();
     }
-    
+
     public async Task<IEnumerable<RoomDto>> GetFilteredRoomsAsync(RoomFilterDto filter)
     {
         var rooms = await _unitOfWork.Rooms.GetAllAsync();
@@ -120,14 +90,6 @@ public class RoomService : IRoomService
             .Skip((filter.PageNumber - 1) * filter.PageSize)
             .Take(filter.PageSize);
 
-        return query.Select(r => new RoomDto
-        {
-            Id = r.Id,
-            RoomNumber = r.RoomNumber,
-            RoomType = r.RoomType,
-            PricePerNight = r.PricePerNight,
-            IsAvailable = r.IsAvailable
-        }).ToList();
+        return _mapper.Map<IEnumerable<RoomDto>>(query.ToList());
     }
-
 }

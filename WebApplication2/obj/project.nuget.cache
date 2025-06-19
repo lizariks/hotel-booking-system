@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "NA87RIi2mC4FW+bK4GdRACkh9eF1B6n5XYzZH6ceZ5yUStdUbxoql5l5nF2Xbr5us9sC5pMGaElhnpN7vnz23A==",
+  "dgSpecHash": "VaJNALFvFAw=",
   "success": true,
   "projectFilePath": "/Users/admin/RiderProjects/WebApplication2/WebApplication2/WebApplication2.csproj",
   "expectedPackageFiles": [
+    "/Users/admin/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
+    "/Users/admin/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "/Users/admin/.nuget/packages/fluentvalidation/11.11.0/fluentvalidation.11.11.0.nupkg.sha512",
     "/Users/admin/.nuget/packages/fluentvalidation.aspnetcore/11.3.1/fluentvalidation.aspnetcore.11.3.1.nupkg.sha512",
     "/Users/admin/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.11.0/fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
@@ -13,7 +15,7 @@
     "/Users/admin/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/7.0.18/microsoft.aspnetcore.cryptography.keyderivation.7.0.18.nupkg.sha512",
     "/Users/admin/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/7.0.18/microsoft.aspnetcore.identity.entityframeworkcore.7.0.18.nupkg.sha512",
     "/Users/admin/.nuget/packages/microsoft.aspnetcore.openapi/7.0.20/microsoft.aspnetcore.openapi.7.0.20.nupkg.sha512",
-    "/Users/admin/.nuget/packages/microsoft.csharp/4.5.0/microsoft.csharp.4.5.0.nupkg.sha512",
+    "/Users/admin/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
     "/Users/admin/.nuget/packages/microsoft.entityframeworkcore/7.0.18/microsoft.entityframeworkcore.7.0.18.nupkg.sha512",
     "/Users/admin/.nuget/packages/microsoft.entityframeworkcore.abstractions/7.0.18/microsoft.entityframeworkcore.abstractions.7.0.18.nupkg.sha512",
     "/Users/admin/.nuget/packages/microsoft.entityframeworkcore.analyzers/7.0.18/microsoft.entityframeworkcore.analyzers.7.0.18.nupkg.sha512",
