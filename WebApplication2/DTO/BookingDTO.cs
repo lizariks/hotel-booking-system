@@ -17,4 +17,19 @@ public class BookingDto
     public decimal TotalPrice { get; set; }
     public bool? IsCancelled { get; set; }
 }
+public class CreateBookingDto
+{
+    [Required]
+    public string RoomId { get; set; }
+
+    [Required]
+    public DateTime CheckInDate { get; set; }
+
+    [Required]
+    public DateTime CheckOutDate { get; set; }
+
+    [Range(0.01, double.MaxValue, ErrorMessage = "TotalPrice must be greater than 0")]
+    public decimal TotalPrice { get; set; }
+}
+
 

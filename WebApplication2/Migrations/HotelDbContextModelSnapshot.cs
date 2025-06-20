@@ -186,7 +186,7 @@ namespace WebApplication2.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("WebApplication2.Enteties.Review", b =>
@@ -353,8 +353,8 @@ namespace WebApplication2.Migrations
                         {
                             Id = "user-1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "931a6f7e-ccca-43fd-9e7a-bbb5a1d5c352",
-                            CreatedAt = new DateTime(2025, 6, 19, 23, 15, 2, 697, DateTimeKind.Utc).AddTicks(2420),
+                            ConcurrencyStamp = "f6f22be4-7e56-479f-888f-0bf6bfb06cb7",
+                            CreatedAt = new DateTime(2025, 6, 20, 1, 11, 42, 156, DateTimeKind.Utc).AddTicks(2550),
                             Email = "elizachigir@gmail.com",
                             EmailConfirmed = false,
                             FirstName = "Elizaveta",
@@ -363,7 +363,7 @@ namespace WebApplication2.Migrations
                             PasswordHash = "123456",
                             PhoneNumberConfirmed = false,
                             Role = "Customer",
-                            SecurityStamp = "a39cae54-76fa-4d3a-bd69-30cee16bf165",
+                            SecurityStamp = "ed37e181-e923-4032-a8c5-646a828c65e9",
                             TwoFactorEnabled = false
                         });
                 });

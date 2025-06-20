@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using WebApplication2.Services.Interfaces;
 using WebApplication2.DTO;
 
-
-
 [ApiController]
 [Route("api/[controller]")]
 public class RoomsController : ControllerBase
@@ -17,10 +15,10 @@ public class RoomsController : ControllerBase
         _roomService = roomService;
     }
 
-    [HttpGet("available")]
-    public async Task<IActionResult> GetAvailableRooms()
+    [HttpGet]
+    public async Task<IActionResult> GetRooms([FromQuery] RoomFilterDto filter)
     {
-        var rooms = await _roomService.GetAvailableRoomsAsync();
+        var rooms = await _roomService.GetFilteredRoomsAsync(filter);
         return Ok(rooms);
     }
 
@@ -36,7 +34,7 @@ public class RoomsController : ControllerBase
     public async Task<IActionResult> CreateRoom([FromBody] RoomDto dto)
     {
         await _roomService.AddRoomAsync(dto);
-        return StatusCode(201); 
+        return StatusCode(201);
     }
 
     [HttpPut("{id}")]

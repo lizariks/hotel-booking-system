@@ -8,7 +8,7 @@ namespace WebApplication2.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+
 public class BookingsController : ControllerBase
 {
     private readonly IBookingService _bookingService;
@@ -27,7 +27,7 @@ public class BookingsController : ControllerBase
 
         return Ok(booking);
     }
-
+    [Authorize]
     [HttpGet("my")]
     public async Task<IActionResult> GetMyBookings()
     {

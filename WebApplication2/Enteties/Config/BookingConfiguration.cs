@@ -8,6 +8,7 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
 {
     public void Configure(EntityTypeBuilder<Booking> builder)
     {
+        builder.ToTable("Bookings");
         builder.HasKey(b => b.Id);
         builder.Property(b => b.TotalPrice).HasPrecision(10, 2);
 

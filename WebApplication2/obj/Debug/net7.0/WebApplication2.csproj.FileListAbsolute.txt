@@ -62,5 +62,4 @@
 /Users/admin/RiderProjects/WebApplication2/WebApplication2/bin/Debug/net7.0/WebApplication2.staticwebassets.runtime.json
 /Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/WebApplication2.RazorAssemblyInfo.cache
 /Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/WebApplication2.RazorAssemblyInfo.cs
-/Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/WebApplication2.sourcelink.json
-/Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/WebAppli.0DB3FC1A.Up2Date
+/Users/admin/RiderProjects/WebApplication2/WebApplication2/obj/Debug/net7.0/WebApplication2.csproj.CopyComplete
